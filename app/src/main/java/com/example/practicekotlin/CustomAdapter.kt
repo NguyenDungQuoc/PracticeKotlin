@@ -7,32 +7,29 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.line_food.view.*
-import kotlinx.android.synthetic.main.line_food.view.imgViewFood
-import kotlinx.android.synthetic.main.line_food.view.textViewFoodName
-import kotlinx.android.synthetic.main.line_food.view.textViewPriceFood
+import com.example.practicekotlin.Model.Food
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class CustomAdapter(private val food: List<Food>) : RecyclerView.Adapter<CustomAdapter.viewHolder>() {
+class CustomAdapter(private val context: Context, private val food: MutableList<Food>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-        return viewHolder(itemView)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val itemView = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false)
+        return ViewHolder(itemView)
     }
 
     override fun getItemCount() = food.size
 
-    override fun onBindViewHolder(holder: viewHolder, position: Int) {
-        val currentItem = food[position]
-
-        holder.imgViewFood.setImageResource(currentItem.imgFood)
-        holder.textViewFoodName.text =  currentItem.nameFood
-        holder.textViewPriceFood.text = currentItem.priceFood.toString()
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+//        Picasso.get().load(food[position].url.into(holder.imgViewFood))
+        Picasso.with(holder.imgViewFood.context).load(food[position].url).into(holder.imgViewFood)
+        holder.textViewFoodName.text =  food[position].title
+        holder.textViewPriceFood.text = food[position].price.toString()
 
 
     }
 
-    class viewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewFoodName : TextView = itemView.textViewFoodName
         val textViewPriceFood : TextView = itemView.textViewPriceFood
         val imgViewFood : ImageView = itemView.imgViewFood
