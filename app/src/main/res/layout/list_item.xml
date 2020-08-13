@@ -23,13 +23,13 @@
                 android:layout_height="130dp"
                 android:id="@+id/imgViewFood"
                 android:scaleType="centerCrop"
-                android:src="@drawable/cherries"/>
+                android:src="@drawable/cherries" />
         
         <TextView
             android:id="@+id/textViewFoodName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Cherry1sdsaduasdiadasdsdfsdfsdfsdfdsasdasdasdsadas"
+            tools:text="@string/food_name"
             android:maxLines="1"
             android:singleLine="true"
             android:layout_toEndOf="@+id/imgViewFood"

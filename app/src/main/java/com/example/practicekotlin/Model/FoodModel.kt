@@ -1,6 +1,6 @@
 package com.example.practicekotlin.Model
 
-open class FoodModel(
+class FoodModel(
     var status: StatusFood,
     var result: MutableList<Food>
 )

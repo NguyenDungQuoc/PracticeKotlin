@@ -1,9 +1,16 @@
 package com.example.practicekotlin
 
 import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.practicekotlin.Common.Common
 import com.example.practicekotlin.Interface.RetrofitService
@@ -19,42 +26,45 @@ class MainActivity : AppCompatActivity() {
     //    private val foodList = generateDummyList(20)
     lateinit var dialog: AlertDialog
     lateinit var mService: RetrofitService
-    lateinit var  adapter : CustomAdapter
+    lateinit var adapter: CustomAdapter
+    private lateinit var foodViewModel: FoodViewModel
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        setSupportActionBar(findViewById(R.id.toolbar))
-
+        foodViewModel =  ViewModelProviders.of(this).get(FoodViewModel::class.java)
         mService = Common.retrofitService.create(RetrofitService::class.java)
 
-        recycle_view.layoutManager =  GridLayoutManager(this, 2)
+        recycle_view.layoutManager = GridLayoutManager(this, 2)
         recycle_view.setHasFixedSize(true)
 
-        dialog =  SpotsDialog.Builder().setCancelable(false).setContext(this).build()!!
-        getAllProducts()
+        dialog = SpotsDialog.Builder().setCancelable(false).setContext(this).build()!!
+        adapter = CustomAdapter(baseContext,  mutableListOf())
+        recycle_view.adapter = adapter
 
+
+        foodViewModel.result.observe(this, Observer {
+           adapter.setData(it.result)
+            dialog.dismiss()
+
+        })
+
+        foodViewModel.errorMessage?.observe(this, Observer {
+            dialog.setMessage("khong the tai du lieu")
+            dialog.setButton(Dialog.BUTTON_POSITIVE, "OK",
+                DialogInterface.OnClickListener { dialog, i -> dialog.dismiss()  } )
+            dialog.show()
+
+
+        })
+        getAllProducts()
     }
+
 
     private fun getAllProducts() {
         dialog.show()
-
-        mService.getAllProducts().enqueue(object : Callback<FoodModel> {
-
-            override fun onResponse(call: Call<FoodModel>, response: Response<FoodModel>) {
-                adapter = CustomAdapter(baseContext, response.body()?.result ?: mutableListOf())
-                adapter.notifyDataSetChanged()
-                recycle_view.adapter = adapter
-
-                dialog.dismiss()
-        }
-
-            override fun onFailure(call: Call<FoodModel>, t: Throwable) {
-
-            }
-
-        })
+        foodViewModel.getProduct()
     }
 
 //    fun insertItem(view : View) {
