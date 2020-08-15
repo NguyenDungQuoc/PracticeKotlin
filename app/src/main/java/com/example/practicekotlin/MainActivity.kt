@@ -1,64 +1,105 @@
 package com.example.practicekotlin
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.practicekotlin.Common.Common
+import com.example.practicekotlin.Interface.RetrofitService
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.list_item.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
+    lateinit var dialog: AlertDialog
+    lateinit var mService: RetrofitService
+    lateinit var adapter: CustomAdapter
+    private lateinit var foodViewModel: FoodViewModel
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val foodList = generateDummyList(7)
-        recycle_view.adapter = CustomAdapter(foodList)
-        recycle_view.layoutManager =  LinearLayoutManager(this)
+        //khoi tao actionbar
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.title = "Thông tin sản phẩm"
+        title = actionBar?.title
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+
+
+
+        foodViewModel =  ViewModelProviders.of(this).get(FoodViewModel::class.java)
+        mService = Common.retrofitService.create(RetrofitService::class.java)
+
+        //khoi tao layout
+        recycle_view.layoutManager = GridLayoutManager(this, 2)
         recycle_view.setHasFixedSize(true)
 
-         setSupportActionBar(findViewById(R.id.toolbar))
+        dialog = SpotsDialog.Builder().setCancelable(false).setContext(this).build()!!
+        adapter = CustomAdapter(baseContext,  mutableListOf())
+        adapter.onClick = {
+             val intent: Intent = Intent(this@MainActivity, InfoProduct::class.java)
+            intent.putExtra("DATA", it)
+            startActivity(intent)
+        }
+        recycle_view.adapter = adapter
 
-//        var arrayfood: ArrayList<Food> = ArrayList()
-//        arrayfood.add(Food("Cherry", R.drawable.cherries,15000))
-//        arrayfood.add(Food("Banh Socola", R.drawable.brownie,15000))
-//        arrayfood.add(Food("Banh Bong", R.drawable.sweet,15000))
-//        arrayfood.add(Food("Banh Trai Cay", R.drawable.fruittart,15000))
-//        arrayfood.add(Food("Banh Trung", R.drawable.pastrydish,15000))
-//        arrayfood.add(Food("Banh Cuon", R.drawable.hunterpastry,15000))
-//        listView.adapter = CustomAdapter(this@MainActivity, arrayfood)
+
+        foodViewModel.result.observe(this, Observer {
+           adapter.setData(it.result)
+            dialog.dismiss()
+
+        })
+
+        foodViewModel.errorMessage?.observe(this, Observer {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("khong the tai du lieu")
+            builder.setPositiveButton("OK",DialogInterface.OnClickListener { dialog, i -> finish() })
+            dialog = builder.create()
+            dialog.show()
+
+        })
+
+
+        getAllProducts()
+
+
     }
 
+    private fun getAllProducts() {
+        dialog.show()
+        foodViewModel.getProduct()
+//        imgViewFood.setOnClickListener {
+//            val intent: Intent = Intent(this@MainActivity, InforProduct::class.java)
+//            startActivity(intent)
+//        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbaritem, menu)
-//        val searchItem = menu?.findItem(R.id.app_bar_search)
-//        val searchView = searchItem?.actionView as SearchView
-
-        return super.onCreateOptionsMenu(menu)
+        return true
     }
 
-    private fun generateDummyList(size: Int): List<Food> {
-        val list = ArrayList<Food>()
-
-        for(i in 0 until size) {
-            val drawable = when (i % 3) {
-                0 -> R.drawable.cherries
-                1-> R.drawable.hunterpastry
-                2 -> R.drawable.pastrydish
-                3-> R.drawable.sweet
-                4 -> R.drawable.brownie
-                else -> R.drawable.fruittart
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.ic_favorite -> {
+                Log.d("MainActivity", "onOptionsItemSelected" )
             }
-            val item = Food("Mon $i", drawable, 15000 )
-            list += item
         }
-        return list
+        return true
     }
 
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PracticeKotlin</string>
+    <string name="food_name">Unknowns</string>
 </resources>
