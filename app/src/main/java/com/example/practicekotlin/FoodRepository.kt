@@ -1,10 +1,8 @@
 package com.example.practicekotlin
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.practicekotlin.Common.Common
 import com.example.practicekotlin.Interface.RetrofitService
-import com.example.practicekotlin.Model.Food
 import com.example.practicekotlin.Model.FoodModel
 import retrofit2.Call
 import retrofit2.Callback

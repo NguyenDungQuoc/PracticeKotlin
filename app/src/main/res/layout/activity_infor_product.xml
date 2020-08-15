@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="4dp"
+    app:cardPreventCornerOverlap="false">
+
+
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:id="@+id/imgViewFood"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cherries" />
+
+        <TextView
+            android:id="@+id/textViewFoodName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/food_name"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_toEndOf="@+id/imgViewFood"
+            android:layout_toRightOf="@+id/imgViewFood"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textViewPriceFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gia"
+            android:textSize="25sp"
+            android:layout_toRightOf="@+id/imgViewFood"
+            android:layout_below="@+id/textViewFoodName"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

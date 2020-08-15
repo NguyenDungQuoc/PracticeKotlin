@@ -1,8 +1,11 @@
 package com.example.practicekotlin.Model
 
-class Food {
-    var title: String? = null
-    var url: String? = null
-    var price: String? = null
-}
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Food(var title: String? = null,
+                var url: String? = null,
+                var price: String? = null,
+                var id: Int? = null): Parcelable
 
