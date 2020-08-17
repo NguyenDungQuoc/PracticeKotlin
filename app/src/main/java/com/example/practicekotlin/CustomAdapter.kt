@@ -48,7 +48,7 @@ class CustomAdapter(private val context: Context, private var _food: MutableList
         init {
             itemView.setOnClickListener {
                 var position = adapterPosition
-                 var item = food[position]
+                  var item = food[position]
                 onClick?.invoke(item)
                 //lay item tu mang
 

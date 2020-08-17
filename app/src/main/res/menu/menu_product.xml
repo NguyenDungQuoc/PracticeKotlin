@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+<!--    <item-->
+<!--        android:id="@+id/ic_favorite"-->
+<!--        android:icon="@drawable/ic_heart"-->
+<!--        android:title="Filter"-->
+<!--        app:showAsAction="ifRoom" />-->
+
+    <!--    <item-->
+    <!--        android:id="@+id/ic_favorite_click"-->
+    <!--        android:icon="@drawable/ic_heart_click"-->
+    <!--        android:title="Filter"-->
+    <!--        app:showAsAction="ifRoom" />-->
+
+        <item
+            android:checked="true"
+            android:id="@+id/ic_list_favorite"
+            android:icon="@drawable/ic_favorite_list"
+            app:showAsAction="ifRoom"
+            android:title="List_Favorite" />
+</menu>

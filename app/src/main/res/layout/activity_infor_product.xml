@@ -20,13 +20,13 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:id="@+id/imgViewFood"
+            android:layout_height="240dp"
+            android:id="@+id/imgProduct"
             android:scaleType="centerCrop"
             android:src="@drawable/cherries" />
 
         <TextView
-            android:id="@+id/textViewFoodName"
+            android:id="@+id/textNameProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@string/food_name"
@@ -39,7 +39,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/textViewPriceFood"
+            android:id="@+id/textPriceProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gia"
