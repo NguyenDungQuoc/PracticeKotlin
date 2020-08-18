@@ -2,6 +2,7 @@ package com.example.practicekotlin
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,7 +37,7 @@ class ListFavoriteProduct : AppCompatActivity() {
         createCycleView()
 
         //list favorite đã lưu từ InfoProductActiviti
-        sharedPre = getSharedPreferences("APP_SHARED", Activity.MODE_PRIVATE)
+        sharedPre = getSharedPreferences("LIST_CHECKED", Activity.MODE_PRIVATE)
         prefsEditor = sharedPre?.edit()
         listIdString = sharedPre?.getString("LIST_ID", "") ?: ""
         lstId = Gson().fromJson<MutableList<Int>>(
@@ -55,6 +56,11 @@ class ListFavoriteProduct : AppCompatActivity() {
         }
 
         adapter = CustomAdapter(baseContext, lstResult)//list can show
+        adapter.onClick = {
+            val intent: Intent = Intent(this@ListFavoriteProduct, InfoProduct::class.java)
+            intent.putExtra("DATA",  it)
+            startActivity(intent)
+        }
         recycle_view1.adapter = adapter //do du lieu len recycle view
 
 
